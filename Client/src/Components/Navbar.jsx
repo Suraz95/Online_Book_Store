@@ -1,57 +1,129 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import logo from "../assets/logo/logo.png"
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import logo from "../assets/logo/logo.png";
+import {jwtDecode} from "jwt-decode";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const navigate = useNavigate();
 
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        jwtDecode(token);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+      }
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  const fetchWishlistCount = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await axios.get('http://localhost:8000/wishlist', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setWishlistCount(response.data.wishlist.length);
+      } catch (error) {
+        console.error("Error fetching wishlist count:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+    fetchWishlistCount();
+    const handleStorageChange = (event) => {
+      if (event.key === "token") {
+        checkAuth();
+        fetchWishlistCount();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:8000/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      localStorage.removeItem("token");
+      setIsLoggedIn(false);
+      setWishlistCount(0); // Reset wishlist count on logout
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      // Optional: Display an error message to the user
+    }
+  };
+  
   return (
-    <nav className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 shadow-lg sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <img src={logo} alt="Tripify Logo" className="w-auto h-14"/>
-            {/* <div className="flex-shrink-0 text-white font-bold text-lg">
-              Tripify
-            </div> */}
+            <img src={logo} alt="Tripify Logo" className="w-auto h-14" />
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <NavLink
-                to="/"
-                exact="true"
-                activeclassname="text-white"
-                className="text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                to="/home"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white"
+                    : "text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                }
               >
                 Home
               </NavLink>
+              
               <NavLink
-                to="/about"
-                activeclassname="text-white"
-                className="text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                to="/wishlist"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white"
+                    : "text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                }
               >
-                About
+                Wishlist {isLoggedIn && <span>({wishlistCount})</span>}
               </NavLink>
-              <NavLink
-                to="/services"
-                activeclassname="text-white"
-                className="text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
-              >
-                Services
-              </NavLink>
-              <NavLink
-                to="/contact"
-                activeclassname="text-white"
-                className="text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
-              >
-                Contact
-              </NavLink>
-              <NavLink
-                to="/login"
-                activeclassname="text-white"
-                className="bg-pink-500 text-white hover:bg-pink-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
-              >
-                Login
-              </NavLink>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-pink-500 text-white hover:bg-pink-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-white"
+                      : "bg-pink-500 text-white hover:bg-pink-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                  }
+                >
+                  Login
+                </NavLink>
+              )}
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -90,40 +162,73 @@ const Navbar = () => {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <NavLink
               to="/"
-              exact="true"
-              activeclassname="text-white"
-              className="text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white"
+                  : "text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              }
             >
               Home
             </NavLink>
             <NavLink
               to="/about"
-              activeclassname="text-white"
-              className="text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white"
+                  : "text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              }
             >
               About
             </NavLink>
             <NavLink
               to="/services"
-              activeclassname="text-white"
-              className="text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white"
+                  : "text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              }
             >
               Services
             </NavLink>
             <NavLink
               to="/contact"
-              activeclassname="text-white"
-              className="text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white"
+                  : "text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              }
             >
               Contact
             </NavLink>
             <NavLink
-              to="/login"
-              activeclassname="text-white"
-              className="bg-pink-500 text-white hover:bg-pink-600 block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              to="/wishlist"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white"
+                  : "text-gray-100 hover:bg-orange-500 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              }
             >
-              Login
+              Wishlist {isLoggedIn && <span>({wishlistCount})</span>}
             </NavLink>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="bg-pink-500 text-white hover:bg-pink-600 block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+              >
+                Logout
+              </button>
+            ) : (
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white"
+                    : "bg-pink-500 text-white hover:bg-pink-600 block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+                }
+              >
+                Login
+              </NavLink>
+            )}
           </div>
         </div>
       )}
@@ -132,4 +237,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-  

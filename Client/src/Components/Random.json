@@ -1,0 +1,222 @@
+[
+  {
+    "_id": "66679a3de6c82139e2d206e3",
+    "publisher": "Scholastic Corporation",
+    "books": [
+      {
+        "title": "Harry Potter and The  Philopher Stone",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "Orphaned Harry Potter learns on his eleventh birthday that he's a wizard and escapes his dreadful life with his relatives. Enrolled in Hogwarts School of Witchcraft and Wizardry, he forms a loyal friendship with Ron and Hermione. Together, they uncover a plot involving a powerful stone and confront a dark force that threatens the wizarding world.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81q77Q39nEL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 23,
+        "boughtby": [null, null],
+        "_id": "66679a3de6c82139e2d206e4"
+      },
+      {
+        "title": "Harry Potter and the Chamber of Secrets",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "Harry Potter returns to Hogwarts for his second year, but a dark force is at work, and there are whispers of a dangerous secret chamber.",
+        "imageUrl": "https://m.media-amazon.com/images/I/818umIdoruL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 20,
+        "boughtby": [null, null, null, null, null],
+        "_id": "66679b2fc2cead0663c6fa69"
+      },
+      {
+        "title": "Harry Potter and the Prisoner of Azkaban",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "A dangerous escaped prisoner, Sirius Black, is believed to be on the hunt for Harry Potter. With fear hanging heavy in the air, Harry starts his third year at Hogwarts under the watchful eye of the new Defense Against the Dark Arts teacher, the eccentric Remus Lupin. As Harry dives deeper into his past and the secrets surrounding his parents' deaths, he uncovers a truth that turns his world upside down. Loyalties are tested, courage is challenged, and Harry discovers the power of friendship and facing his fears",
+        "imageUrl": "https://m.media-amazon.com/images/I/81NQA1BDlnL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679b79c2cead0663c6fa6e"
+      },
+      {
+        "title": "Harry Potter and the Goblet of Fire",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "A prestigious international tournament, the Triwizard Tournament, comes to Hogwarts, bringing delegations from magical schools across Europe. But when Harry's name is mysteriously selected as the fourth competitor, his life takes a dangerous turn. Facing deadly challenges alongside students from other schools, Harry must confront a reborn Lord Voldemort and a terrifying plot that could shatter the fragile peace in the wizarding world",
+        "imageUrl": "https://m.media-amazon.com/images/I/81zeKRGCPpL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679bb8c2cead0663c6fa74"
+      },
+      {
+        "title": "Harry Potter and the Order of the Phoenix",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "The Ministry of Magic refuses to acknowledge Voldemort's return, leaving Harry and his friends to face the growing darkness alone. With the help of Dumbledore's secret organization, the Order of the Phoenix, they form a clandestine group called Dumbledore's Army to learn defensive magic and prepare for the inevitable battle ahead. But as the Ministry tightens its grip on Hogwarts, Harry grapples with isolation, grief, and the burden of a looming war.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81Budsu1XBL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 23,
+        "boughtby": [null, null],
+        "_id": "66679bfec2cead0663c6fa7b"
+      },
+      {
+        "title": "Harry Potter and the Deathly Hallows",
+        "author": "J K Rouling",
+        "genre": "Fantasy",
+        "description": "With Voldemort's forces taking over the wizarding world, Harry, Ron, and Hermione go into hiding, on a desperate quest to find and destroy the remaining Horcruxes. They follow cryptic clues left by Dumbledore, leading them on a dangerous journey fraught with loss, betrayal, and sacrifice",
+        "imageUrl": "https://m.media-amazon.com/images/I/81aCMT1zKtL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679c5ac2cead0663c6fa83"
+      }
+    ],
+    "__v": 14
+  },
+  {
+    "_id": "66679d0ec2cead0663c6fa86",
+    "publisher": "Ferozsons",
+    "books": [
+      {
+        "title": "Peer E Kamil",
+        "author": "Umera Ahmad",
+        "genre": "Novel",
+        "description": "Imama, a rebellious young woman, clashes with her family's religious expectations. Salar, a gifted young man, seeks connection. Their paths intertwine in a story of love, faith, and self-discovery.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81wsJ8nSYqL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 23,
+        "boughtby": [null, null],
+        "_id": "66679d0ec2cead0663c6fa87"
+      }
+    ],
+    "__v": 2
+  },
+  {
+    "_id": "66679d95c2cead0663c6fa8a",
+    "publisher": "Atria Books",
+    "books": [
+      {
+        "title": "It Ends With Us",
+        "author": "Colleen Hoover",
+        "genre": "Romance",
+        "description": "Lily Bloom swore off Atlas Corrigan after a passionate but tumultuous relationship in college. Years later, she's built a successful life as a single mom. However, Atlas reappears as her new client, reigniting old feelings and forcing her to confront the past. Torn between her guarded heart and the undeniable pull towards Atlas, Lily must decide if their love can truly overcome its history.",
+        "imageUrl": "https://m.media-amazon.com/images/I/813aV273-rL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679d95c2cead0663c6fa8b"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "66679e49c2cead0663c6fa91",
+    "publisher": "Penguin Random House ",
+    "books": [
+      {
+        "title": "Ikigai: The Japanese Secret to a Long and Happy Life",
+        "author": "Héctor García Puigcerver and Francesc Miralles  pen_spark",
+        "genre": "Self-help/Personal Development",
+        "description": "Drawing inspiration from the longevity and well-being of residents in Okinawa, Japan, known for having the highest concentration of centenarians in the world, this book explores the concept of Ikigai. It delves into the four pillars of Ikigai: passion, mission, vocation, and profession, guiding readers to discover their own reason for being. Filled with practical exercises and insights from centenarians, the book offers a roadmap to a more fulfilling and meaningful life",
+        "imageUrl": "https://images.penguinrandomhouse.com/cover/9780143130727",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679e49c2cead0663c6fa92"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "66679eb1c2cead0663c6fa95",
+    "publisher": " Dutton Penguin",
+    "books": [
+      {
+        "title": "Atomic Habits: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
+        "author": "James Clear",
+        "genre": "Self-help/Personal Development",
+        "description": "This #1 New York Times bestseller  focuses on the small, incremental changes that lead to remarkable results.  Atomic Habits explores the science behind habit formation and provides a practical framework for building good habits and breaking bad ones.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81Ls+SBCLiL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679eb1c2cead0663c6fa96"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "66679f6ac2cead0663c6fa99",
+    "publisher": "Chilton Books",
+    "books": [
+      {
+        "title": "Dune",
+        "author": "Frank Herbert  pen_spark",
+        "genre": "Science Fiction",
+        "description": "Dune is a complex and thought-provoking science fiction novel set on the desert planet Arrakis, the only source of the spice melange, a valuable commodity that extends lifespan and grants heightened mental abilities. The story follows Paul Atreides, son of Duke Leto Atreides, who takes stewardship of Arrakis.  As Paul navigates the complex political landscape and battles against the cruel Harkonnens, he unlocks his hidden potential and becomes the messianic figure known as Muad'Dib",
+        "imageUrl": "https://m.media-amazon.com/images/I/81nq+ewtkcL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679f6ac2cead0663c6fa9a"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "66679fbdc2cead0663c6fa9d",
+    "publisher": "Tor Books",
+    "books": [
+      {
+        "title": "Ender's Game",
+        "author": "Orson Scott Card",
+        "genre": "Science Fiction",
+        "description": " In Ender's Game, Earth is still recovering from a devastating alien invasion.  Gifted children are trained in a zero-gravity Battle School to become the future commanders who will defend humanity. Andrew \"Ender\" Wiggin, a brilliant but troubled young boy, excels in the program's ruthless training.  Ender must grapple with the burden of leadership and the moral consequences of war in this fast-paced and thought-provoking story.",
+        "imageUrl": "https://m.media-amazon.com/images/I/91DCtJSKcKL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "66679fbdc2cead0663c6fa9e"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6667a010c2cead0663c6faa1",
+    "publisher": " BBC Radio 4 ",
+    "books": [
+      {
+        "title": "The Hitchhiker's Guide to the Galaxy (series)",
+        "author": " Douglas Adams",
+        "genre": "Science Fiction",
+        "description": "The Hitchhiker's Guide to the Galaxy is a comedic science fiction series that follows Arthur Dent, an ordinary Englishman, who escapes Earth's destruction with his friend Ford Prefect, an alien researcher for the titular Hitchhiker's Guide.  Together, they embark on a hilarious and absurd journey through the galaxy, encountering strange characters and bizarre situations.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81wixAH4-cL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "6667a010c2cead0663c6faa2"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6667a0afc2cead0663c6faa5",
+    "publisher": "E.gerton ",
+    "books": [
+      {
+        "title": "Pride and Prejudice",
+        "author": "Jane Austen",
+        "genre": "Romance",
+        "description": "Elizabeth Bennet, a spirited and intelligent young woman, navigates societal expectations of love and marriage in 19th century England. When the arrogant Mr. Darcy arrives in her neighborhood, their initial clashes mask a deeper connection that unfolds through witty exchanges and social gatherings. As Elizabeth challenges Darcy's pride, he sheds his aloofness, revealing a kind and admirable man.",
+        "imageUrl": "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 25,
+        "boughtby": [],
+        "_id": "6667a0afc2cead0663c6faa6"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6667a116c2cead0663c6faac",
+    "publisher": "Berkley ",
+    "books": [
+      {
+        "title": "The Love Hypothesis",
+        "author": "Ali Hazelwood",
+        "genre": "Romance",
+        "description": "Olive, a brilliant PhD student, devises a plan to escape her love life woes by creating a fake relationship with the arrogant genius Dr. Anh Nguyen.  Their staged romance takes an unexpected turn as they navigate the challenges and surprising emotions that come with pretending to be in love.  Underneath the facade, a genuine connection blossoms, forcing them to confront their true feelings.",
+        "imageUrl": "https://m.media-amazon.com/images/I/81plBFoPgtL._AC_UF1000,1000_QL80_.jpg",
+        "copiesAvailable": 24,
+        "boughtby": [null],
+        "_id": "6667a116c2cead0663c6faad"
+      }
+    ],
+    "__v": 1
+  }
+]
