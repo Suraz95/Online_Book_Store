@@ -35,7 +35,7 @@ const Signup = () => {
       password.length >= 8 ? (checkPasswordStrength(password) ? 100 : 50) : 0;
     return strength;
   };
-
+axios.defaults.withCredentials = true;
   const getPasswordStrengthText = (strength) => {
     if (strength === 0) return "Weak";
     if (strength < 50) return "Normal";
