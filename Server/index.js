@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors(
   {origin:["https://online-book-store-client.vercel.app"],
   methods:["POST","GET","PUT","DELETE"],
-  credentilas:true,}
+  credentials:true,}
 ));
 
 const db = "mongodb+srv://shaiksuraz50:8Zhg3S9vanvvSlOE@cluster0.tre1ikc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
