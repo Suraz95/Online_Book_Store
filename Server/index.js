@@ -7,11 +7,11 @@ const { Publisher } = require('./models/Book');
 const Customer = require("./models/Customer");
 
 app.use(express.json());
-app.use(cors(
-  {origin:["https://online-book-store-client.vercel.app"],
-  methods:["POST","GET","PUT","DELETE"],
-  credentials:true,}
-));
+app.use(cors({
+  origin: ["https://online-book-store-client.vercel.app"],
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  credentials: true,
+}));
 
 const db = "mongodb+srv://shaiksuraz50:8Zhg3S9vanvvSlOE@cluster0.tre1ikc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const jwtSecret = 'e0f90e50d589ab7f4a2d1f6e8b6c2d86d761a1f6d937274fa8b2f98e3d50de5b52b7328b9f1e6e2c2eab9e842d2c4d4d2738d0fa7355bb8fd28cf437a9e2d6d6';
