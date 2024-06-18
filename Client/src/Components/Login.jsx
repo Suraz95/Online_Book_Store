@@ -14,7 +14,7 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
