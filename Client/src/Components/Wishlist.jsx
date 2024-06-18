@@ -21,7 +21,7 @@ const Wishlist = () => {
       return [];
     }
   };
-
+axios.defaults.withCredentials = true;
   const fetchBooksFromDatabase = async () => {
     try {
       const response = await axios.get('https://online-book-store-ten.vercel.app/books');
