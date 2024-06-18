@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
   const navigate = useNavigate();
-
+axios.defaults.withCredentials = true;
   const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (token) {
