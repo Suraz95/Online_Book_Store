@@ -15,7 +15,7 @@ const BookDashboard = () => {
   const fetchBooks = () => {
     setTimeout(() => {
       axios
-        .get("http://localhost:8000/books", {
+        .get("https://online-book-store-ten.vercel.app/books", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -35,7 +35,7 @@ const BookDashboard = () => {
   const handleDelete = (bookId) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       axios
-        .delete(`http://localhost:8000/books/${bookId}`, {
+        .delete(`https://online-book-store-ten.vercel.app/books/${bookId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -65,7 +65,7 @@ const BookDashboard = () => {
 
   const handleSaveEdit = (updatedBook) => {
     axios
-      .put(`http://localhost:8000/books/${updatedBook._id}`, updatedBook, {
+      .put(`https://online-book-store-ten.vercel.app/books/${updatedBook._id}`, updatedBook, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
