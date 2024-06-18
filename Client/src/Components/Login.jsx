@@ -26,7 +26,7 @@ const Login = () => {
       return;
     }
 
-    axios.post('http://localhost:8000/login', { email, password })
+    axios.post('https://online-book-store-ten.vercel.app/login', { email, password })
       .then(result => {
         console.log(result);
         if (result.data.token) {
