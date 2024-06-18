@@ -10,7 +10,7 @@ const Sidebar = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8000/logout', {}, {
+      await axios.post('https://online-book-store-ten.vercel.app/logout', {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
