@@ -30,7 +30,7 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const response = await axios.get('http://localhost:8000/wishlist', {
+        const response = await axios.get('https://online-book-store-ten.vercel.app/wishlist', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -60,7 +60,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8000/logout', {}, {
+      await axios.post('https://online-book-store-ten.vercel.app/logout', {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }
