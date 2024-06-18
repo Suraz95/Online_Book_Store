@@ -11,7 +11,7 @@ const BookDashboard = () => {
   useEffect(() => {
     fetchBooks();
   }, []);
-
+axios.defaults.withCredentials = true;
   const fetchBooks = () => {
     setTimeout(() => {
       axios
