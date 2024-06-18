@@ -15,7 +15,7 @@ const BookCard = ({ book, token, isExpanded, onExpand, onRemove }) => {
   useEffect(() => {
     const checkIfFavorite = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/wishlist", {
+        const response = await axios.get("https://online-book-store-ten.vercel.app/wishlist", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,7 +36,7 @@ const BookCard = ({ book, token, isExpanded, onExpand, onRemove }) => {
     try {
       if (!isFavorite) {
         await axios.put(
-          "http://localhost:8000/wishlist",
+          "https://online-book-store-ten.vercel.app/wishlist",
           { bookTitle: book.title },
           {
             headers: {
@@ -45,7 +45,7 @@ const BookCard = ({ book, token, isExpanded, onExpand, onRemove }) => {
           }
         );
       } else {
-        await axios.delete("http://localhost:8000/wishlist", {
+        await axios.delete("https://online-book-store-ten.vercel.app/wishlist", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ const BookCard = ({ book, token, isExpanded, onExpand, onRemove }) => {
   const handleBuyConfirm = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/purchase",
+        "https://online-book-store-ten.vercel.app/purchase",
         {
           bookTitle: book.title,
           username: userName,
