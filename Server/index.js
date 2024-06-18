@@ -8,7 +8,7 @@ const Customer = require("./models/Customer");
 
 app.use(express.json());
 app.use(cors(
-  {origin:["https://online-book-store-client.vercel.app/"],
+  {origin:["https://online-book-store-client.vercel.app"],
   methods:["POST","GET","PUT","DELETE"],
   credentilas:true,}
 ));
