@@ -18,7 +18,7 @@ const CustomerDashboard = () => {
     const fetchCustomers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/customers', {
+        const response = await axios.get('https://online-book-store-ten.vercel.app/customers', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -60,7 +60,7 @@ const CustomerDashboard = () => {
   const handleSaveEdit = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8000/customers/${editingCustomerId}`, editedCustomer, {
+      await axios.put(`https://online-book-store-ten.vercel.app/customers/${editingCustomerId}`, editedCustomer, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ const CustomerDashboard = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8000/customers/${id}`, {
+      await axios.delete(`https://online-book-store-ten.vercel.app/customers/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
