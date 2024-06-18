@@ -11,7 +11,7 @@ const BookCard = ({ book, token, isExpanded, onExpand, onRemove }) => {
   const [copiesAvailable, setCopiesAvailable] = useState(book.copiesAvailable);
 
   const userName = jwtDecode(token).username;
-
+axios.defaults.withCredentials = true;
   useEffect(() => {
     const checkIfFavorite = async () => {
       try {
