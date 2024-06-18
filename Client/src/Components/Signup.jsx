@@ -87,7 +87,7 @@ const Signup = () => {
     }
   
     axios
-      .post("http://localhost:8000/signup", {
+      .post("https://online-book-store-ten.vercel.app/signup", {
         name,
         phone,
         username,
