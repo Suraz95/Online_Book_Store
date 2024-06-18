@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import HeroCarousel from './courasel/HeroCourasel';
-import Navbar from "./Navbar"
+import Navbar from "./Navbar";
 import BookCard from './BookCard';
-import Footer from "./Footer"
+import Footer from "./Footer";
+
 const App = () => {
   const [booksByGenre, setBooksByGenre] = useState({});
   const [userId, setUserId] = useState(null);
@@ -17,13 +18,29 @@ const App = () => {
         const response = await axios.get('http://localhost:8000/books');
         const publishers = response.data;
 
-        // Flatten the books array from all publishers and include publisher name in each book object
+        console.log("Fetched publishers data:", publishers); // Log the data to see its structure
+
+        // Flatten the books array from all publishers and include publication and publisher details in each book object
         const books = publishers.reduce((acc, publisher) => {
-          const booksWithPublisher = publisher.books.map(book => ({
-            ...book,
-            publisher: publisher.name // Add publisher name to each book
-          }));
-          return acc.concat(booksWithPublisher);
+          if (!publisher.publications || !Array.isArray(publisher.publications)) {
+            console.warn(`Publisher ${publisher.publisherName} has no publications or publications is not an array`);
+            return acc;
+          }
+
+          return acc.concat(publisher.publications.reduce((pubAcc, publication) => {
+            if (!publication.publishedBooks || !Array.isArray(publication.publishedBooks)) {
+              console.warn(`Publication by ${publication.author} in genre ${publication.genre} has no publishedBooks or publishedBooks is not an array`);
+              return pubAcc;
+            }
+
+            const booksWithDetails = publication.publishedBooks.map(book => ({
+              ...book,
+              author: publication.author,
+              genre: publication.genre,
+              publisherName: publisher.publisherName
+            }));
+            return pubAcc.concat(booksWithDetails);
+          }, []));
         }, []);
 
         const groupedBooks = books.reduce((acc, book) => {
@@ -48,7 +65,7 @@ const App = () => {
         const response = await axios.get('http://localhost:8000/user/token', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const { userId, email } = response.data;
+        const { userId } = response.data;
         setUserId(userId);
       } catch (error) {
         console.error('Error fetching user info:', error);
@@ -89,38 +106,38 @@ const App = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="min-h-screen">
-      <HeroCarousel slides={slides} />
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold mb-4 text-center">Featured Books by Genre</h2>
-        {Object.keys(booksByGenre).map(genre => (
-          <div key={genre} className="mb-8">
-            <h3 className="text-2xl font-semibold mb-4 text-center">{genre}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
-              {booksByGenre[genre].map(book => (
-                <motion.div
-                  key={book._id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <BookCard
+      <Navbar/>
+      <div className="min-h-screen">
+        <HeroCarousel slides={slides} />
+        <div className="container mx-auto px-4 py-8">
+          <h2 className="text-3xl font-bold mb-4 text-center">Featured Books by Genre</h2>
+          {Object.keys(booksByGenre).map(genre => (
+            <div key={genre} className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-center">{genre}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+                {booksByGenre[genre].map(book => (
+                  <motion.div
                     key={book._id}
-                    book={book}
-                    token={token}
-                    isExpanded={expandedBook === book._id}
-                    onExpand={() => handleExpand(book._id)}
-                  />
-                </motion.div>
-              ))}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -50 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <BookCard
+                      key={book._id}
+                      book={book}
+                      token={token}
+                      isExpanded={expandedBook === book._id}
+                      onExpand={() => handleExpand(book._id)}
+                    />
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer/>
     </>
   );
 };

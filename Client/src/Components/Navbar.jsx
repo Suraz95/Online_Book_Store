@@ -76,11 +76,15 @@ const Navbar = () => {
   };
   
   return (
-    <nav className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 shadow-lg sticky top-0 z-50">
+    <nav className=" shadow-lg sticky top-0 z-50"
+    style={{background: "linear-gradient(to right, #3c1053, #ad5389)",
+        color: "#bd9f67",}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <img src={logo} alt="Tripify Logo" className="w-auto h-14" />
+            {/* <img src={logo} alt="Tripify Logo" className="w-auto h-14" /> */}
+            <h1 class="text-2xl  text-center text-yellow-600">THE BOOK VAULT</h1>
+
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
@@ -104,6 +108,16 @@ const Navbar = () => {
                 }
               >
                 Wishlist {isLoggedIn && <span>({wishlistCount})</span>}
+              </NavLink>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white"
+                    : "text-gray-100 hover:bg-orange-500 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                }
+              >
+                My Orders
               </NavLink>
               {isLoggedIn ? (
                 <button

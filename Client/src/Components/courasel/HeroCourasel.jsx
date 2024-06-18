@@ -57,12 +57,6 @@ const HeroCarousel = ({ slides }) => {
             >
               {slides[currentIndex].subtitle}
             </motion.p>
-            {/* <a
-              href={slides[currentIndex].link}
-              className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 hover:from-orange-500 hover:via-pink-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded"
-            >
-              {slides[currentIndex].buttonText}
-            </a> */}
           </div>
         </div>
       </div>

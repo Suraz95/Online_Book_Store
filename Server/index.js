@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const app = express();
-const { Book, Publisher } = require('./models/Book');
+const { Publisher } = require('./models/Book');
 const Customer = require("./models/Customer");
 
 app.use(express.json());
@@ -182,52 +182,69 @@ app.put('/customers/:id', authenticateJWT, (req, res) => {
     });
 });
 
-app.post('/dashboard/book', authenticateJWT, async (req, res) => {
-  const { publisher, title, author, genre, description, imageUrl, totalCopies, copiesAvailable } = req.body;
 
+
+app.post('/dashboard/book',authenticateJWT, async (req, res) => {
   try {
-    let existingPublisher = await Publisher.findOne({ publisher });
+    const { publisherName, publications } = req.body;
 
-    if (existingPublisher) {
-      const existingBook = existingPublisher.books.find(book => book.title === title);
+    // Validate request payload
+    if (!publisherName || !publications || publications.length === 0) {
+      return res.status(400).json({ error: 'Publisher name and publications array are required.' });
+    }
 
-      if (existingBook) {
-        return res.status(400).json({ message: 'Book title already exists under this publisher.' });
-      } else {
-        existingPublisher.books.push({ title, author, genre, description, imageUrl, totalCopies, copiesAvailable });
-        await existingPublisher.save();
-        res.status(201).json({ message: 'Book added to existing publisher.' });
+    // Process each publication in the request
+    for (let publication of publications) {
+      const { author, genre, publishedBooks } = publication;
+
+      // Validate required fields
+      if (!author || !genre || !publishedBooks || publishedBooks.length === 0) {
+        return res.status(400).json({ error: 'Author, genre, and publishedBooks array are required for each publication.' });
       }
-    } else {
-      const newPublisher = new Publisher({
-        publisher,
-        books: [{ title, author, genre, description, imageUrl, totalCopies, copiesAvailable }]
-      });
-      await newPublisher.save();
-      res.status(201).json({ message: 'New publisher and book added.' });
+
+      // Find the existing publisher
+      let existingPublisher = await Publisher.findOne({ publisherName: publisherName });
+
+      if (existingPublisher) {
+        // Check if there's an existing publication with the same author and genre
+        let existingPublication = existingPublisher.publications.find(pub => pub.author === author && pub.genre === genre);
+
+        if (existingPublication) {
+          // Update existing publication's publishedBooks array with new books
+          existingPublication.publishedBooks.push(...publishedBooks);
+        } else {
+          // Add new publication with author and genre
+          existingPublisher.publications.push({ author, genre, publishedBooks });
+        }
+
+        // Save the updated existingPublisher
+        await existingPublisher.save();
+        res.status(200).json(existingPublisher);
+      } else {
+        // Publisher does not exist, create a new publisher entry with the publication
+        const newPublisher = new Publisher({
+          publisherName: publisherName,
+          publications: [{ author, genre, publishedBooks }],
+        });
+
+        const savedPublisher = await newPublisher.save();
+        res.status(201).json(savedPublisher);
+      }
     }
   } catch (error) {
-    console.error('Error adding book:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    console.error('Error saving publisher:', error);
+    res.status(500).json({ error: 'Failed to save publisher' });
   }
 });
 
-app.get('/publishers', authenticateJWT, async (req, res) => {
-  try {
-    const publishers = await Publisher.find();
-    res.status(200).json(publishers);
-  } catch (error) {
-    console.error('Error fetching publishers:', error);
-    res.status(500).json({ message: 'Internal server error.' });
-  }
-});
+
 app.get('/books', async (req, res) => {
   try {
-    const publishers = await Publisher.find();
-    res.status(200).json(publishers);
-  } catch (err) {
-    console.error("Error fetching books:", err);
-    res.status(500).json({ error: "Could not fetch books" });
+    const allPublishers = await Publisher.find().populate('publications.publishedBooks');
+    res.json(allPublishers);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Failed to fetch data' });
   }
 });
 
@@ -317,18 +334,26 @@ app.post('/purchase', authenticateJWT, async (req, res) => {
     const { bookTitle } = req.body;
     const { username } = req.user;
 
-    const publisher = await Publisher.findOne({ 'books.title': bookTitle });
+    const publisher = await Publisher.findOne({ 'publications.publishedBooks.title': bookTitle });
     if (!publisher) {
       return res.status(404).json({ message: 'Book not found' });
     }
 
-    const book = publisher.books.find(book => book.title === bookTitle);
-    if (book.copiesAvailable <= 0) {
+    let book;
+    publisher.publications.forEach(publication => {
+      publication.publishedBooks.forEach(publishedBook => {
+        if (publishedBook.title === bookTitle) {
+          book = publishedBook;
+        }
+      });
+    });
+
+    if (!book || book.copiesAvailable <= 0) {
       return res.status(400).json({ message: 'No copies available' });
     }
 
     book.copiesAvailable -= 1;
-    book.SoldCopies = book.SoldCopies ? book.SoldCopies + 1 : 1;
+    book.soldCopies = book.soldCopies ? book.soldCopies + 1 : 1;
     await publisher.save();
 
     const customer = await Customer.findOne({ username });
@@ -350,27 +375,147 @@ app.post('/purchase', authenticateJWT, async (req, res) => {
 });
 
 
-app.put('/orders', authenticateJWT, async (req, res) => {
-  console.log('Received request at /orders');
-  try {
-    const { bookTitle, userName } = req.body;
-    console.log('Request body:', req.body);
+// In your Express app (e.g., app.js or routes file)
+app.put("/books/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, description, imageUrl, price, totalCopies, copiesAvailable, soldCopies } = req.body;
 
-    const customer = await Customer.findOne({ userName });
-    if (!customer) {
-      console.log('Customer not found');
-      return res.status(404).json({ message: 'Customer not found' });
+  try {
+    // Find the book by ID and update it
+    const publisher = await Publisher.findOne({ "publications.publishedBooks._id": id });
+    if (!publisher) {
+      return res.status(404).send("Book not found");
     }
 
-    customer.orders.push(bookTitle);
-    await customer.save();
+    const publication = publisher.publications.find(pub => pub.publishedBooks.some(book => book._id.equals(id)));
+    const book = publication.publishedBooks.id(id);
 
-    res.status(200).json({ message: 'Book added to orders' });
+    book.title = title;
+    book.description = description;
+    book.imageUrl = imageUrl;
+    book.price = price;
+    book.totalCopies = totalCopies;
+    book.copiesAvailable = copiesAvailable;
+    book.soldCopies = soldCopies;
+
+    await publisher.save();
+    res.json(book);
   } catch (error) {
-    console.error('Error adding book to orders:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).send("Server error");
   }
 });
+
+app.delete("/books/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const publisher = await Publisher.findOne({ "publications.publishedBooks._id": id });
+
+    if (!publisher) {
+      return res.status(404).send("Book not found");
+    }
+
+    const publication = publisher.publications.find(pub =>
+      pub.publishedBooks.some(book => book._id.equals(id))
+    );
+
+    if (!publication) {
+      return res.status(404).send("Book not found");
+    }
+
+    // Find the index of the book to remove
+    const indexToRemove = publication.publishedBooks.findIndex(book => book._id.equals(id));
+
+    if (indexToRemove === -1) {
+      return res.status(404).send("Book not found");
+    }
+
+    // Remove the book from the array using splice
+    publication.publishedBooks.splice(indexToRemove, 1);
+
+    await publisher.save(); // Save the updated publisher object
+
+    res.send("Book deleted");
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+
+// DELETE a book
+// DELETE a book
+app.delete("/publishers/:publisherId/books/:bookId", authenticateJWT, async (req, res) => {
+  const { publisherId, bookId } = req.params;
+
+  try {
+    // Find the publisher by ID
+    const publisher = await Publisher.findById(publisherId);
+    if (!publisher) {
+      return res.status(404).json({ message: "Publisher not found" });
+    }
+
+    // Find the book by ID and remove from publications array
+    let bookDeleted = false;
+    publisher.publications.forEach(publication => {
+      const bookIndex = publication.publishedBooks.findIndex(book => book.id === bookId);
+      if (bookIndex !== -1) {
+        publication.publishedBooks.splice(bookIndex, 1);
+        bookDeleted = true;
+      }
+    });
+
+    if (!bookDeleted) {
+      return res.status(404).json({ message: "Book not found in publisher's publications" });
+    }
+
+    // Save the updated publisher
+    await publisher.save();
+
+    res.status(200).json({ message: "Book deleted successfully", publisher });
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+app.get('/my-orders', authenticateJWT, async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    // Find customer by email
+    const customer = await Customer.findOne({ email });
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found' });
+    }
+
+    // Assuming customer.orders is an array of book titles
+    res.status(200).json({ orders: customer.orders });
+  } catch (error) {
+    console.error('Error retrieving orders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}); 
+app.get('/books/:title', async (req, res) => {
+  try {
+    const { title } = req.params;
+    const publisher = await Publisher.findOne({ 'books.title': title });
+
+    if (!publisher) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+
+    const book = publisher.books.find(book => book.title === title);
+    res.status(200).json(book);
+  } catch (error) {
+    console.error('Error retrieving book:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 const PORT = 8000;
 app.listen(PORT, () => {

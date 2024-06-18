@@ -1,114 +1,117 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from './Sidebar';
+
 const CustomerDashboard = () => {
-    const [customers, setCustomers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [editingCustomerId, setEditingCustomerId] = useState(null);
-    const [editedCustomer, setEditedCustomer] = useState({
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editingCustomerId, setEditingCustomerId] = useState(null);
+  const [editedCustomer, setEditedCustomer] = useState({
+    name: '',
+    email: '',
+    timestamps: [],
+    orders: []
+  });
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:8000/customers', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setCustomers(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  const handleEdit = (id) => {
+    setEditingCustomerId(id);
+    const customerToEdit = customers.find(customer => customer._id === id);
+    setEditedCustomer({ ...customerToEdit });
+  };
+
+  const handleEditChange = (e) => {
+    setEditedCustomer({
+      ...editedCustomer,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCustomerId(null);
+    setEditedCustomer({
       name: '',
       email: '',
-      timestamps: []
+      timestamps: [],
+      orders: []
     });
-  
-    useEffect(() => {
-      const fetchCustomers = async () => {
-        try {
-          const token = localStorage.getItem('token');
-          const response = await axios.get('http://localhost:8000/customers', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          setCustomers(response.data);
-          setLoading(false);
-        } catch (error) {
-          setError(error.message);
-          setLoading(false);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:8000/customers/${editingCustomerId}`, editedCustomer, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      };
-  
-      fetchCustomers();
-    }, []);
-  
-    const handleEdit = (id) => {
-      setEditingCustomerId(id);
-      const customerToEdit = customers.find(customer => customer._id === id);
-      setEditedCustomer({ ...customerToEdit });
-    };
-  
-    const handleEditChange = (e) => {
-      setEditedCustomer({
-        ...editedCustomer,
-        [e.target.name]: e.target.value
       });
-    };
-  
-    const handleCancelEdit = () => {
+      const updatedCustomers = customers.map(customer => {
+        if (customer._id === editingCustomerId) {
+          return editedCustomer;
+        }
+        return customer;
+      });
+      setCustomers(updatedCustomers);
       setEditingCustomerId(null);
       setEditedCustomer({
         name: '',
         email: '',
-        timestamps: []
+        timestamps: [],
+        orders: []
       });
-    };
-  
-    const handleSaveEdit = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        await axios.put(`http://localhost:8000/customers/${editingCustomerId}`, editedCustomer, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        const updatedCustomers = customers.map(customer => {
-          if (customer._id === editingCustomerId) {
-            return editedCustomer;
-          }
-          return customer;
-        });
-        setCustomers(updatedCustomers);
-        setEditingCustomerId(null);
-        setEditedCustomer({
-          name: '',
-          email: '',
-          timestamps: []
-        });
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-  
-    const handleDelete = async (id) => {
-      try {
-        const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:8000/customers/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setCustomers(customers.filter(customer => customer._id !== id));
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-  
-    if (loading) {
-      return <div>Loading...</div>;
+    } catch (error) {
+      setError(error.message);
     }
-  
-    if (error) {
-      return <div>Error: {error}</div>;
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://localhost:8000/customers/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setCustomers(customers.filter(customer => customer._id !== id));
+    } catch (error) {
+      setError(error.message);
     }
-  
-    return (
-        <>
-        <Sidebar/>
-      <div className="flex h-screen ">
-      
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <>
+      <Sidebar />
+      <div className="flex h-screen">
         <div className="flex-1 ml-64 p-8">
-          <div className="bg-white p-8 rounded shadow-lg w-full max-w-4xl text-center animate-fade-in">
+          <div className="bg-white p-8 rounded shadow-lg w-4/5 max-w-full text-center animate-fade-in mx-auto">
             <h1 className="text-3xl font-bold mb-4 text-gray-800">Customers</h1>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white w-full">
@@ -119,6 +122,7 @@ const CustomerDashboard = () => {
                     <th className="py-2 px-4 border-b">Login Date</th>
                     <th className="py-2 px-4 border-b">Login Time</th>
                     <th className="py-2 px-4 border-b">Logout Time</th>
+                    <th className="py-2 px-4 border-b">Orders</th>
                     <th className="py-2 px-4 border-b">Action</th>
                   </tr>
                 </thead>
@@ -165,6 +169,19 @@ const CustomerDashboard = () => {
                               <td className="py-2 px-4 border-b">{timestamp.logout ? timestamp.logout.split(' ')[1] : 'NA'}</td>
                               {index === 0 && (
                                 <td className="py-2 px-4 border-b" rowSpan={groupedTimestamps[date].length}>
+                                  {customer.orders.length > 0 ? (
+                                    <ul>
+                                      {customer.orders.map(order => (
+                                        <li key={order}>Order ID: {order}</li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    'No orders'
+                                  )}
+                                </td>
+                              )}
+                              {index === 0 && (
+                                <td className="py-2 px-4 border-b" rowSpan={groupedTimestamps[date].length}>
                                   {editingCustomerId === customer._id ? (
                                     <>
                                       <button onClick={handleSaveEdit} className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded mr-2">Save</button>
@@ -185,7 +202,7 @@ const CustomerDashboard = () => {
                     })
                   ) : (
                     <tr>
-                      <td colSpan="6" className="py-2 px-4 border-b text-center">No customers found</td>
+                      <td colSpan="7" className="py-2 px-4 border-b text-center">No customers found</td>
                     </tr>
                   )}
                 </tbody>
@@ -194,21 +211,19 @@ const CustomerDashboard = () => {
           </div>
         </div>
       </div>
-      </>
-    );
-  };
-  
-  const groupTimestampsByDate = (timestamps) => {
-    return timestamps.reduce((groups, timestamp) => {
-      const date = timestamp.login.split(' ')[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(timestamp);
-      return groups;
-    }, {})
-    ;
+    </>
+  );
+};
 
-}
+const groupTimestampsByDate = (timestamps) => {
+  return timestamps.reduce((groups, timestamp) => {
+    const date = timestamp.login.split(' ')[0];
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(timestamp);
+    return groups;
+  }, {});
+};
 
-export default CustomerDashboard
+export default CustomerDashboard;

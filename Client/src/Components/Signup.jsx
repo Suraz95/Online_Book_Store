@@ -22,7 +22,7 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [buttonLabel, setButtonLabel] = useState("Generate OTP");
   const [showModal, setShowModal] = useState(false);
-  const [isVerified, setIsVerified] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
 
   const checkPasswordStrength = (password) => {
@@ -236,7 +236,7 @@ const Signup = () => {
                   onChange={handleEmailChange}
                   required
                 />
-                {/* <button
+                <button
                   type="button"
                   className={`w-full py-2 rounded focus:outline-none focus:ring transition duration-300 ${
                     isVerified ? "bg-green-500" : "bg-blue-500 hover:bg-blue-600"
@@ -244,7 +244,7 @@ const Signup = () => {
                   onClick={generateOtp}
                 >
                   {isVerified ? "Verified" : "Verify"}
-                </button> */}
+                </button>
               </div>
             </div>
             {showModal && (
