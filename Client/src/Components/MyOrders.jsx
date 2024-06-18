@@ -7,7 +7,7 @@ const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+axios.defaults.withCredentials = true;
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
