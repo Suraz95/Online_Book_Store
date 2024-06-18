@@ -11,7 +11,7 @@ const App = () => {
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [expandedBook, setExpandedBook] = useState(null);
-
+axios.defaults.withCredentials = true;
   useEffect(() => {
     const fetchBooks = async () => {
       try {
