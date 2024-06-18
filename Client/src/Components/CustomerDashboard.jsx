@@ -13,7 +13,7 @@ const CustomerDashboard = () => {
     timestamps: [],
     orders: []
   });
-
+axios.defaults.withCredentials = true;
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
