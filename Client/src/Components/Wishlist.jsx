@@ -10,7 +10,7 @@ const Wishlist = () => {
   const fetchWishlist = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8000/wishlist', {
+      const response = await axios.get('https://online-book-store-ten.vercel.app/wishlist', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -24,7 +24,7 @@ const Wishlist = () => {
 
   const fetchBooksFromDatabase = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/books');
+      const response = await axios.get('https://online-book-store-ten.vercel.app/books');
       const publishers = response.data;
 
       // Flatten the books array from all publishers and publications and include publisher name and publication details in each book object
