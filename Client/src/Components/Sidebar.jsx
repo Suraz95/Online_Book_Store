@@ -22,6 +22,7 @@ const Sidebar = () => {
       // Optional: Display an error message to the user
     }
   };
+  axios.defaults.withCredentials = true;
 
   return (
     <motion.div
